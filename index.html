@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mi San Valentín 💝</title>
+    <style>
+        /* Estilos generales */
+        body {
+            margin: 0;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: url('https://images.pexels.com/photos/4041287/pexels-photo-4041287.jpeg') center/cover no-repeat;
+            font-family: 'Arial', cursive;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .container {
+            text-align: center;
+            padding: 30px;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 20px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+            position: relative;
+            z-index: 2;
+        }
+
+        h1 {
+            color: #87CEEB;
+            margin-bottom: 30px;
+            font-size: clamp(1.5em, 6vw, 2em); /* Tamaño adaptable */
+        }
+
+        .botones {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+        }
+
+        button {
+            padding: 15px 30px;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.2em;
+            cursor: pointer;
+            transition: transform 0.3s, background-color 0.3s;
+        }
+
+        #si {
+            background: #2ed573;
+            color: white;
+        }
+
+        #no {
+            background: #ff4757;
+            color: white;
+            position: relative;
+        }
+
+        #mensaje {
+            display: none;
+            margin-top: 20px;
+            font-size: 1.5em;
+            color: #2ed573;
+            animation: fadeInUp 1s;
+        }
+
+        .corazones {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+
+        .corazon {
+            position: absolute;
+            animation: flotar 3s linear infinite;
+            font-size: 24px;
+            color: #87CEEB;
+        }
+
+        #gifAmor {
+            display: none;
+            position: absolute;
+            width: 250px;
+            top: 25%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            filter: drop-shadow(0 0 15px rgba(0, 234, 255, 0.581));
+            animation: flotarSuave 2s ease-in-out infinite;
+            z-index: 3;
+        }
+
+        /* Animaciones */
+        @keyframes flotar {
+            0% { transform: translateY(100vh) rotate(0deg); }
+            100% { transform: translateY(-100vh) rotate(360deg); }
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes flotarSuave {
+            0% { transform: translate(-50%, -50%) scale(1); }
+            50% { transform: translate(-50%, -55%) scale(1.05); }
+            100% { transform: translate(-50%, -50%) scale(1); }
+        }
+
+        /* Estilos para móvil */
+        @media (max-width: 600px) {
+            .container {
+                padding: 20px;
+                margin: 0 15px; /* Evita que toque los bordes */
+            }
+
+            h1 {
+                font-size: 1.8em;
+                margin-bottom: 20px;
+            }
+
+            #gifAmor {
+                top: 18%;
+                width: 180px;
+            }
+
+            .botones {
+                flex-direction: column; /* Apilar botones verticalmente */
+                gap: 10px;
+            }
+
+            button {
+                padding: 12px 25px;
+                font-size: 1.1em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Capa de corazones -->
+    <div class="corazones" id="corazones"></div>
+
+    <!-- GIF animado (capa superior) -->
+    <img src="https://media3.giphy.com/media/v1.Y2lkPTc5MGI3NjExaXBsOWxlcmJyODJlemRqZzRjZnQ5aXNqbWhkb2NmdjIyeDMzMHE0YyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/4fs0zoeCw3qR0ZPVze/giphy.gif" 
+         alt="Amor animado" 
+         id="gifAmor">
+
+    <!-- Contenedor principal -->
+    <div class="container">
+        <h1>¿Quieres ser mi San Valentín? 💖</h1>
+        <div class="botones">
+            <button id="si">¡Sí! 😍</button>
+            <button id="no">No 😢</button>
+        </div>
+        <div id="mensaje">¡Sabía que dirías que sí, mi niña! 💞</div>
+    </div>
+
+    <script>
+        const siBtn = document.getElementById('si');
+        const noBtn = document.getElementById('no');
+        const mensaje = document.getElementById('mensaje');
+        const corazonesContainer = document.getElementById('corazones');
+        const gifAmor = document.getElementById('gifAmor');
+
+        // Función para crear corazones
+        function crearCorazon() {
+            const corazon = document.createElement('div');
+            corazon.innerHTML = '💖';
+            corazon.className = 'corazon';
+            corazon.style.left = Math.random() * 100 + 'vw';
+            corazon.style.animationDuration = (Math.random() * 3 + 2) + 's';
+            corazonesContainer.appendChild(corazon);
+            
+            setTimeout(() => corazon.remove(), 3000);
+        }
+
+        // Movimiento del botón No (para móvil y desktop)
+        noBtn.addEventListener('mouseover', () => {
+            moverBotonNo();
+        });
+
+        noBtn.addEventListener('touchstart', () => {
+            moverBotonNo();
+        });
+
+        function moverBotonNo() {
+            const x = Math.random() * (window.innerWidth - noBtn.offsetWidth);
+            const y = Math.random() * (window.innerHeight - noBtn.offsetHeight);
+            noBtn.style.transform = `translate(${x - noBtn.offsetLeft}px, ${y - noBtn.offsetTop}px)`;
+        }
+
+        // Acción del botón Sí
+        siBtn.addEventListener('click', () => {
+            document.querySelector('.botones').style.display = 'none';
+            mensaje.style.display = 'block';
+            gifAmor.style.display = 'block'; // Mostrar GIF
+            setInterval(crearCorazon, 300);
+            setTimeout(() => setInterval(crearCorazon, 100), 1000);
+        });
+
+        // Evitar que el botón No se clique
+        noBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            moverBotonNo();
+        });
+    </script>
+</body>
+</html>
